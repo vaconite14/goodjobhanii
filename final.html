@@ -140,4 +140,172 @@
         /* Animasi meluncur dari atas untuk sertifikat */
         .cert-anim { animation: slideDown 1.5s ease-out forwards; }
         @keyframes slideDown {
-            0% { transform: translateY(-80px); opacity: 0;
+            0% { transform: translateY(-80px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="intro-section">
+            <h1>Selamat! Kamu berhasil! 🎉</h1>
+            <p style="margin-bottom: 25px; color: #666;">Ada sesuatu buat kamu nih...</p>
+            <button class="btn btn-claim" onclick="startAnimation()">Claim</button>
+        </div>
+
+        <div id="stage" class="hidden">
+            <img id="puppet-img" src="" alt="Cerita Kerja">
+        </div>
+
+        <div id="name-input-section" class="hidden">
+            <h2 style="font-size: 18px; color: #d81b60;">Sebentar, ketik nama panggilan kesayanganmu dulu:</h2>
+            <input type="text" id="user-name" placeholder="Namamu..." autocomplete="off">
+            <br>
+            <button class="btn btn-submit" onclick="generateCertificate()">Buat Sertifikat</button>
+        </div>
+
+        <div id="certificate-wrapper" class="hidden">
+            <div class="cert-inner">
+                <div class="cert-title">Sertifikat Penghargaan</div>
+                <div class="cert-sub">Diberikan dengan penuh cinta dan rasa bangga kepada:</div>
+                
+                <div class="cert-name" id="display-name">Sayangku</div>
+                
+                <div class="cert-reason">
+                    Atas kerja kerasnya menyelesaikan pekerjaan hari ini, dan secara resmi diakui sebagai<br>
+                    <span class="cert-highlight">Perempuan Terhebat Sejagat Raya</span>
+                </div>
+
+                <div class="cert-footer">
+                    <div>
+                        <div class="cert-date-text" id="display-date">Tanggal</div>
+                        <div class="cert-sign-line">Tanggal</div>
+                    </div>
+                    <div>
+                        <div class="cert-sign-text">Pacarmu</div>
+                        <div class="cert-sign-line">Tertanda</div>
+                    </div>
+                </div>
+                <div class="cert-seal">❤️</div>
+            </div>
+        </div>
+
+        <div id="controls-section" class="hidden">
+            <h2 style="color: #d81b60; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Kerja bagus hari ini! ❤️</h2>
+            <button class="btn btn-ulang" onclick="startAnimation()">Ulang</button>
+            <button class="btn btn-tambahan" onclick="goToNextPage()">Tambahan</button>
+        </div>
+    </div>
+
+    <script>
+        // Hapus sertifikat.png dari array karena sekarang pakai HTML
+        const storyImages = [
+            "image/kerja1.png",
+            "image/pusing.png",
+            "image/kerja2.png",
+            "image/ngantuk.png",
+            "image/kerja3.png",
+            "image/kelar.png"
+        ];
+
+        // Sistem Preload
+        const preloadedImages = [];
+        storyImages.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+            preloadedImages.push(img);
+        });
+
+        let currentIndex = 0;
+        let storyInterval;
+
+        function startAnimation() {
+            // Sembunyikan semua section untuk mereset tampilan
+            document.getElementById('intro-section').classList.add('hidden');
+            document.getElementById('name-input-section').classList.add('hidden');
+            document.getElementById('certificate-wrapper').classList.add('hidden');
+            document.getElementById('controls-section').classList.add('hidden');
+            document.getElementById('user-name').value = ''; // Kosongkan input nama
+            
+            const stage = document.getElementById('stage');
+            stage.classList.remove('hidden');
+
+            currentIndex = 0;
+            showImage();
+
+            storyInterval = setInterval(() => {
+                currentIndex++;
+                
+                if (currentIndex < storyImages.length) {
+                    showImage();
+                } else {
+                    // Animasi selesai (habis gambar kelar.png)
+                    clearInterval(storyInterval);
+                    
+                    // Sembunyikan panggung dan munculkan input nama
+                    setTimeout(() => {
+                        document.getElementById('stage').classList.add('hidden');
+                        document.getElementById('name-input-section').classList.remove('hidden');
+                    }, 1000); // Tunggu 1 detik setelah gambar 'kelar' baru minta nama
+                }
+            }, 1500); 
+        }
+
+        function showImage() {
+            const imgElement = document.getElementById('puppet-img');
+            imgElement.src = storyImages[currentIndex];
+            
+            imgElement.classList.remove('puppet-anim');
+            void imgElement.offsetWidth; 
+            imgElement.classList.add('puppet-anim'); 
+        }
+
+        function generateCertificate() {
+            // 1. Ambil input nama
+            let inputName = document.getElementById('user-name').value.trim();
+            // Jika dia iseng tidak mengisi apa-apa, kasih nama default
+            if (inputName === "") {
+                inputName = "Si Cantik";
+            }
+
+            // 2. Format Nama (tambahkan -ku Sayang)
+            const finalName = inputName + "-ku Sayang";
+            document.getElementById('display-name').innerText = finalName;
+
+            // 3. Format Tanggal Hari Ini (Otomatis)
+            const today = new Date();
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            // Hasilnya akan seperti: "1 Juni 2026"
+            const formattedDate = today.toLocaleDateString('id-ID', options);
+            document.getElementById('display-date').innerText = formattedDate;
+
+            // 4. Sembunyikan input, munculkan sertifikat dan kontrol
+            document.getElementById('name-input-section').classList.add('hidden');
+            
+            const certWrapper = document.getElementById('certificate-wrapper');
+            certWrapper.classList.remove('hidden');
+            
+            // Pancing ulang animasi slideDown
+            certWrapper.classList.remove('cert-anim');
+            void certWrapper.offsetWidth;
+            certWrapper.classList.add('cert-anim');
+
+            document.getElementById('controls-section').classList.remove('hidden');
+        }
+
+        // Fitur: Tekan Enter di input nama langsung men-submit
+        document.getElementById('user-name').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                generateCertificate();
+            }
+        });
+
+        function goToNextPage() {
+            window.location.href = "penutup.html";
+        }
+    </script>
+
+</body>
+</html>
