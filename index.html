@@ -70,13 +70,12 @@
             display: none;
         }
 
-        /* Container khusus untuk video HTML5 */
         .video-container {
             width: 100%;
             border-radius: 10px;
             margin-top: 20px;
             overflow: hidden;
-            pointer-events: none; /* Mematikan semua klik pada area video */
+            pointer-events: none; 
         }
 
         video {
@@ -97,24 +96,24 @@
         <div id="motivation-section" class="hidden">
             <h1>Ayo semangat sayang! ❤️</h1>
             <div class="video-container">
-                <video id="discord-video" playsinline></video>
+                <video id="discord-video" 
+                       src="https://cdn.discordapp.com/attachments/720094030775451658/1510609891197190455/kerja.mp4?ex=6a1d7097&is=6a1c1f17&hm=11e52b5d28165df48bbea25fb2bc7aee794399b06d90de18c248ab0d4bdf1a3b&" 
+                       preload="auto" 
+                       playsinline>
+                </video>
             </div>
             <button class="btn btn-kembali" onclick="goBack()">Kembali</button>
         </div>
     </div>
 
     <script>
-        // Link video Discord sudah dimasukkan di sini
-        const videoUrl = "https://cdn.discordapp.com/attachments/720094030775451658/1510609891197190455/kerja.mp4?ex=6a1d7097&is=6a1c1f17&hm=11e52b5d28165df48bbea25fb2bc7aee794399b06d90de18c248ab0d4bdf1a3b&"; 
-
         function showMotivation() {
             document.getElementById('question-section').classList.add('hidden');
             document.getElementById('motivation-section').classList.remove('hidden');
             
             const vidElement = document.getElementById('discord-video');
-            vidElement.src = videoUrl;
             
-            // Auto-play video saat tombol diklik
+            // Video sudah di-preload, jadi tinggal di-play saja
             vidElement.play();
         }
 
@@ -123,13 +122,14 @@
             document.getElementById('question-section').classList.remove('hidden');
             
             const vidElement = document.getElementById('discord-video');
-            // Hentikan video dan buang sumbernya saat kembali
+            
+            // Hentikan video dan kembalikan durasinya ke detik ke-0 
+            // tanpa menghapus src agar tidak perlu loading lagi kalau ditekan ulang
             vidElement.pause();
-            vidElement.src = ""; 
+            vidElement.currentTime = 0; 
         }
 
         function goToNext() {
-            // Arahkan ke file HTML selanjutnya
             window.location.href = "next.html";
         }
     </script>
