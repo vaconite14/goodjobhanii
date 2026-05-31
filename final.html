@@ -31,7 +31,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Mencegah gambar tumpah ke luar kartu saat animasi dari atas */
+            overflow: hidden; 
         }
 
         h1 {
@@ -91,7 +91,6 @@
             max-height: 250px;
         }
 
-        /* Animasi standar untuk cerita (Pop In) */
         .puppet-anim {
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -101,7 +100,6 @@
             100% { transform: scale(1) translateY(0); opacity: 1; }
         }
 
-        /* Animasi khusus untuk sertifikat (Slide Down Pelan) */
         .cert-anim {
             animation: slideDown 1.5s ease-out forwards;
         }
@@ -143,6 +141,18 @@
             "image/sertifikat.png"
         ];
 
+        // --- SISTEM PRELOAD GAMBAR ---
+        // Membuat array kosong untuk menyimpan objek gambar di memori
+        const preloadedImages = [];
+        
+        // Looping untuk memuat setiap gambar saat halaman dibuka
+        storyImages.forEach((src) => {
+            const img = new Image();
+            img.src = src;
+            preloadedImages.push(img);
+        });
+        // ------------------------------
+
         let currentIndex = 0;
         let storyInterval;
 
@@ -172,15 +182,13 @@
             const imgElement = document.getElementById('puppet-img');
             imgElement.src = storyImages[currentIndex];
             
-            // Hapus kedua jenis animasi terlebih dahulu
             imgElement.classList.remove('puppet-anim', 'cert-anim');
-            void imgElement.offsetWidth; // Memicu reflow browser
+            void imgElement.offsetWidth; 
             
-            // Cek apakah ini gambar terakhir (sertifikat)
             if (currentIndex === storyImages.length - 1) {
-                imgElement.classList.add('cert-anim'); // Gunakan animasi slide dari atas
+                imgElement.classList.add('cert-anim'); 
             } else {
-                imgElement.classList.add('puppet-anim'); // Gunakan animasi pop-in biasa
+                imgElement.classList.add('puppet-anim'); 
             }
         }
 
