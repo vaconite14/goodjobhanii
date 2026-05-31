@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sertifikat Penghargaan</title>
+    <title>Hadiah buat Hani!</title>
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
     <style>
         /* Mengambil font Poppins dan Great Vibes untuk sertifikat */
         @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
@@ -149,8 +150,8 @@
 
     <div class="card">
         <div id="intro-section">
-            <h1>Selamat! Kamu berhasil! 🎉</h1>
-            <p style="margin-bottom: 25px; color: #666;">Ada sesuatu buat kamu nih...</p>
+            <h1>WUIHHH HEBAAAATTT!!!! My hani beneran udah selesai kerjaannyaaaa, YEYYY!!!! 🎉</h1>
+            <p style="margin-bottom: 25px; color: #666;">Ini hadiah yang udah aku siapin buat kamuuu sayangg!!!</p>
             <button class="btn btn-claim" onclick="startAnimation()">Claim</button>
         </div>
 
@@ -159,8 +160,8 @@
         </div>
 
         <div id="name-input-section" class="hidden">
-            <h2 style="font-size: 18px; color: #d81b60;">Sebentar, ketik nama panggilan kesayanganmu dulu:</h2>
-            <input type="text" id="user-name" placeholder="Namamu..." autocomplete="off">
+            <h2 style="font-size: 18px; color: #d81b60;">Verifikasi 2 langkah! Apa panggilan sayang aku buat kamu:</h2>
+            <input type="text" id="user-name" placeholder="Panggilan sayang..." autocomplete="off">
             <br>
             <button class="btn btn-submit" onclick="generateCertificate()">Buat Sertifikat</button>
         </div>
@@ -170,7 +171,7 @@
                 <div class="cert-title">Sertifikat Penghargaan</div>
                 <div class="cert-sub">Diberikan dengan penuh cinta dan rasa bangga kepada:</div>
                 
-                <div class="cert-name" id="display-name">Sayangku</div>
+                <div class="cert-name" id="display-name">ku Sayang</div>
                 
                 <div class="cert-reason">
                     Atas kerja kerasnya menyelesaikan pekerjaan hari ini, dan secara resmi diakui sebagai<br>
@@ -183,7 +184,7 @@
                         <div class="cert-sign-line">Tanggal</div>
                     </div>
                     <div>
-                        <div class="cert-sign-text">Pacarmu</div>
+                        <div class="cert-sign-text">Penpen</div>
                         <div class="cert-sign-line">Tertanda</div>
                     </div>
                 </div>
@@ -191,15 +192,14 @@
             </div>
         </div>
 
-        <div id="controls-section" class="hidden">
-            <h2 style="color: #d81b60; font-size: 16px; margin-top: 0; margin-bottom: 10px;">Kerja bagus hari ini! ❤️</h2>
+<div id="controls-section" class="hidden">
+            <h2 id="final-greeting" style="color: #d81b60; font-size: 18px; margin-top: 0; margin-bottom: 15px;">Kerja bagus hari ini! ❤️</h2>
             <button class="btn btn-ulang" onclick="startAnimation()">Ulang</button>
             <button class="btn btn-tambahan" onclick="goToNextPage()">Tambahan</button>
         </div>
     </div>
 
     <script>
-        // Hapus sertifikat.png dari array karena sekarang pakai HTML
         const storyImages = [
             "image/kerja1.png",
             "image/pusing.png",
@@ -249,7 +249,7 @@
                         document.getElementById('name-input-section').classList.remove('hidden');
                     }, 1000); // Tunggu 1 detik setelah gambar 'kelar' baru minta nama
                 }
-            }, 1500); 
+            }, 2500); 
         }
 
         function showImage() {
@@ -261,22 +261,25 @@
             imgElement.classList.add('puppet-anim'); 
         }
 
-        function generateCertificate() {
+function generateCertificate() {
             // 1. Ambil input nama
             let inputName = document.getElementById('user-name').value.trim();
             // Jika dia iseng tidak mengisi apa-apa, kasih nama default
             if (inputName === "") {
-                inputName = "Si Cantik";
+                inputName = "Caini";
             }
 
-            // 2. Format Nama (tambahkan -ku Sayang)
+            // 2. Format Nama (tambahkan -ku Sayang) di Sertifikat
             const finalName = inputName + "-ku Sayang";
             document.getElementById('display-name').innerText = finalName;
+
+            // --- TAMBAHKAN BARIS INI UNTUK UCAPAN KERJA BAGUS ---
+            document.getElementById('final-greeting').innerText = "Kerja bagus " + inputName + " sayang!!! ❤️";
+            // ----------------------------------------------------
 
             // 3. Format Tanggal Hari Ini (Otomatis)
             const today = new Date();
             const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            // Hasilnya akan seperti: "1 Juni 2026"
             const formattedDate = today.toLocaleDateString('id-ID', options);
             document.getElementById('display-date').innerText = formattedDate;
 
@@ -286,7 +289,6 @@
             const certWrapper = document.getElementById('certificate-wrapper');
             certWrapper.classList.remove('hidden');
             
-            // Pancing ulang animasi slideDown
             certWrapper.classList.remove('cert-anim');
             void certWrapper.offsetWidth;
             certWrapper.classList.add('cert-anim');
