@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kejutan Buat Kamu</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fdf2f8; 
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 550px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Area Teks Mengetik */
+        #typing-container {
+            width: 100%;
+            text-align: left;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #444;
+            min-height: 180px; /* Menjaga agar tombol tidak melompat-lompat */
+            margin-bottom: 20px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: #d81b60;
+            margin-left: 2px;
+            animation: blink 0.8s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Area Kupon Hadiah */
+        #coupon-section {
+            width: 100%;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        #coupon-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h3 {
+            font-size: 18px;
+            color: #d81b60;
+            margin-bottom: 15px;
+        }
+
+        /* Tombol Kupon */
+        .btn-kupon {
+            display: block;
+            width: 100%;
+            background-color: #fff;
+            border: 2px dashed #d81b60;
+            color: #d81b60;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-kupon:hover {
+            background-color: #fce4ec;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(216, 27, 96, 0.2);
+        }
+
+        .btn-kupon span {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="typing-container">
+            <span id="typing-text"></span><span class="cursor" id="cursor"></span>
+        </div>
+
+        <div id="coupon-section">
+            <h3>Ayo Pilih mau hadiah apahhh:</h3>
+            <button class="btn-kupon" onclick="klaimHadiah('Pijat Punggung')">
+                <span>💆‍♀️</span> Pijat Punggung
+            </button>
+            <button class="btn-kupon" onclick="klaimHadiah('Beliin Jajanan Favorit')">
+                <span>🍕</span> Beliin Jajanan Favorit
+            </button>
+            <button class="btn-kupon" onclick="klaimHadiah('Pelukan Paling Hangat')">
+                <span>❤</span> Pelukan Paling Hangat
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ISI SURAT CINTA KAMU DI SINI
+        // Gunakan \n untuk enter / baris baru
+        const pesanSurat = "Halo my Haniiii... ❤️\n\nAku tahu hari ini pasti capek banget, ga cuma hari ini tapi kemarin juga, padahal hari libur tapi masih harus ngurusin kerjaan.... \n Tapi hebatnya, kamu berhasil nyelesaiin semuanya dengan sangat baik. Seperti biasa, aku bangga banget sama haniiii!\n\nSekarang waktunya istirahat. Tutup laptopnya, tarik napas panjang... dan nikmati waktu liburnya bareng oma! \nOh iya, ini silakan pilih hadiah dari aku di bawah ini 👇";
+        
+        let indexHuruf = 0;
+        const kecepatanNgetik = 50; // Semakin kecil angkanya, semakin cepat ngetiknya
+
+        function efekNgetik() {
+            if (indexHuruf < pesanSurat.length) {
+                let huruf = pesanSurat.charAt(indexHuruf);
+                
+                // Ubah \n menjadi tag <br> agar bisa ganti baris di HTML
+                if (huruf === '\n') {
+                    document.getElementById("typing-text").innerHTML += '<br>';
+                } else {
+                    document.getElementById("typing-text").innerHTML += huruf;
+                }
+                
+                indexHuruf++;
+                setTimeout(efekNgetik, kecepatanNgetik);
+            } else {
+                // Jika sudah selesai ngetik, hilangkan kursor dan munculkan tombol kupon
+                document.getElementById("cursor").style.display = "none";
+                setTimeout(() => {
+                    document.getElementById("coupon-section").classList.add("show");
+                }, 500); // Jeda 0.5 detik sebelum tombol muncul
+            }
+        }
+
+        // Jalankan efek ngetik 1 detik setelah halaman dibuka
+        window.onload = function() {
+            setTimeout(efekNgetik, 1000);
+        };
+
+        // --- SISTEM WHATSAPP ---
+        function klaimHadiah(namaHadiah) {
+            // MASUKKAN NOMOR WHATSAPP KAMU DI SINI
+            // Wajib diawali dengan kode negara (62 untuk Indonesia), tanpa angka 0 di depan, tanda +, spasi, atau strip.
+            // Contoh: 6281234567890
+            const nomorWA = "62895413393800"; 
+
+            // Template pesan yang akan otomatis terketik di HP dia
+            const teksPesan = `Haniiii! Aku mau klaim hadiah: *${namaHadiah}* sekarang juga!`;
+            
+            // Ubah teks menjadi format link url
+            const teksEncoded = encodeURIComponent(teksPesan);
+            
+            // Buka WhatsApp
+            window.open(`https://wa.me/${nomorWA}?text=${teksEncoded}`, '_blank');
+        }
+    </script>
+
+</body>
+</html>
