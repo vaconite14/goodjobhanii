@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sertifikat Penghargaan</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fdf2f8; 
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 550px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Mencegah gambar tumpah ke luar kartu saat animasi dari atas */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #d81b60;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-claim {
+            background-color: #ff9800;
+            color: white;
+            font-size: 18px;
+            padding: 15px 40px;
+        }
+
+        .btn-ulang {
+            background-color: #607d8b;
+            color: white;
+        }
+
+        .btn-tambahan {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #stage {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #puppet-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 250px;
+        }
+
+        /* Animasi standar untuk cerita (Pop In) */
+        .puppet-anim {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        /* Animasi khusus untuk sertifikat (Slide Down Pelan) */
+        .cert-anim {
+            animation: slideDown 1.5s ease-out forwards;
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-80px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="intro-section">
+            <h1>Selamat! Kamu berhasil! 🎉</h1>
+            <p style="margin-bottom: 25px; color: #666;">Ada sesuatu buat kamu nih...</p>
+            <button class="btn btn-claim" onclick="startAnimation()">Claim</button>
+        </div>
+
+        <div id="stage" class="hidden">
+            <img id="puppet-img" src="" alt="Cerita Kerja">
+        </div>
+
+        <div id="controls-section" class="hidden">
+            <h2 style="color: #d81b60; font-size: 20px; margin-top: 0;">Kerja bagus hari ini! ❤️</h2>
+            <button class="btn btn-ulang" onclick="startAnimation()">Ulang</button>
+            <button class="btn btn-tambahan" onclick="goToNextPage()">Tambahan</button>
+        </div>
+    </div>
+
+    <script>
+        const storyImages = [
+            "image/kerja1.png",
+            "image/pusing.png",
+            "image/kerja2.png",
+            "image/ngantuk.png",
+            "image/kerja3.png",
+            "image/kelar.png",
+            "image/sertifikat.png"
+        ];
+
+        let currentIndex = 0;
+        let storyInterval;
+
+        function startAnimation() {
+            document.getElementById('intro-section').classList.add('hidden');
+            document.getElementById('controls-section').classList.add('hidden');
+            
+            const stage = document.getElementById('stage');
+            stage.classList.remove('hidden');
+
+            currentIndex = 0;
+            showImage();
+
+            storyInterval = setInterval(() => {
+                currentIndex++;
+                
+                if (currentIndex < storyImages.length) {
+                    showImage();
+                } else {
+                    clearInterval(storyInterval);
+                    document.getElementById('controls-section').classList.remove('hidden');
+                }
+            }, 1500); 
+        }
+
+        function showImage() {
+            const imgElement = document.getElementById('puppet-img');
+            imgElement.src = storyImages[currentIndex];
+            
+            // Hapus kedua jenis animasi terlebih dahulu
+            imgElement.classList.remove('puppet-anim', 'cert-anim');
+            void imgElement.offsetWidth; // Memicu reflow browser
+            
+            // Cek apakah ini gambar terakhir (sertifikat)
+            if (currentIndex === storyImages.length - 1) {
+                imgElement.classList.add('cert-anim'); // Gunakan animasi slide dari atas
+            } else {
+                imgElement.classList.add('puppet-anim'); // Gunakan animasi pop-in biasa
+            }
+        }
+
+        function goToNextPage() {
+            window.location.href = "penutup.html";
+        }
+    </script>
+
+</body>
+</html>

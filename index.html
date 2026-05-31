@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kejutan Buat Kamu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fdf2f8; 
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: #d81b60;
+        }
+
+        .btn {
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-sudah {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-belum {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .btn-kembali {
+            background-color: #607d8b;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Container khusus untuk video HTML5 */
+        .video-container {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            pointer-events: none; /* Mematikan semua klik pada area video */
+        }
+
+        video {
+            width: 100%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div id="question-section">
+            <h1>Apakah kamu sudah selesai kerjaannya?</h1>
+            <button class="btn btn-sudah" onclick="goToNext()">Sudah</button>
+            <button class="btn btn-belum" onclick="showMotivation()">Belum</button>
+        </div>
+
+        <div id="motivation-section" class="hidden">
+            <h1>Ayo semangat sayang! ❤️</h1>
+            <div class="video-container">
+                <video id="discord-video" playsinline></video>
+            </div>
+            <button class="btn btn-kembali" onclick="goBack()">Kembali</button>
+        </div>
+    </div>
+
+    <script>
+        // Link video Discord sudah dimasukkan di sini
+        const videoUrl = "https://cdn.discordapp.com/attachments/720094030775451658/1510609891197190455/kerja.mp4?ex=6a1d7097&is=6a1c1f17&hm=11e52b5d28165df48bbea25fb2bc7aee794399b06d90de18c248ab0d4bdf1a3b&"; 
+
+        function showMotivation() {
+            document.getElementById('question-section').classList.add('hidden');
+            document.getElementById('motivation-section').classList.remove('hidden');
+            
+            const vidElement = document.getElementById('discord-video');
+            vidElement.src = videoUrl;
+            
+            // Auto-play video saat tombol diklik
+            vidElement.play();
+        }
+
+        function goBack() {
+            document.getElementById('motivation-section').classList.add('hidden');
+            document.getElementById('question-section').classList.remove('hidden');
+            
+            const vidElement = document.getElementById('discord-video');
+            // Hentikan video dan buang sumbernya saat kembali
+            vidElement.pause();
+            vidElement.src = ""; 
+        }
+
+        function goToNext() {
+            // Arahkan ke file HTML selanjutnya
+            window.location.href = "next.html";
+        }
+    </script>
+
+</body>
+</html>
